@@ -1,4 +1,6 @@
 /.idea
 /venv
+pip3
+python3
 *.pyc
 __pycache__

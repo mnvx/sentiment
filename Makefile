@@ -7,15 +7,18 @@ help:
 	@echo "        Run tests"
 
 dev:
-	sudo apt-get install python3-virtualenv
-	mkdir -p venv
-	echo "Virtualenv directory" > venv/README
-	virtualenv -p python3.6 --no-site-packages --prompt="(sentiment)" venv/sentiment
-	./activate
-	pip install -r requirements-dev.txt
+	sudo apt-get install python3-venv
+	python3 -m venv venv
+	printf '#!/bin/bash\nvenv/bin/pip3 "$$@"' > pip3
+	chmod +x pip3
+	printf '#!/bin/bash\nvenv/bin/python3 "$$@"' > python3
+	chmod +x python3
+	./pip3 install --upgrade pip
+	./pip3 install -r requirements-dev.txt
+	./pip3 install -r requirements.txt
 
-init:
-	pip install -r requirements.txt
+install:
+	pip3 install -r requirements.txt
 
 test:
 	nosetests tests
