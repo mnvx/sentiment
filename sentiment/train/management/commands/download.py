@@ -3,22 +3,21 @@ import os
 import subprocess
 from ....settings import BASE_DIR
 from ....common.catalog.sentiment_type import SentimentType
+from ....common.catalog.source import Source
 
 
 class Command(BaseCommand):
     help = 'Download database for training'
 
     urls = {
-        'mokoron': {
+        Source.MOKORON: {
             SentimentType.POSITIVE: 'https://www.dropbox.com/s/fnpq3z4bcnoktiv/positive.csv?dl=0',
             SentimentType.NEGATIVE: 'https://www.dropbox.com/s/r6u59ljhhjdg6j0/negative.csv?dl=0',
         }
     }
 
     def add_arguments(self, parser):
-        parser.add_argument('source', type=str, help='Clear training data type', choices=[
-            'mokoron',
-        ])
+        parser.add_argument('source', type=str, help='Clear training data type', choices=Source.get_list())
 
     def handle(self, *args, **options):
         for sentiment_type in SentimentType.get_significant():
