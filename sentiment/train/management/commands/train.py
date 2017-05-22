@@ -53,9 +53,11 @@ class Command(BaseCommand):
         config.read(config_file)
         column_index = int(config['csv']['IndexOfColumnWithData'])
         delimiter = config['csv']['Delimiter']
+        encoding = config['csv']['Encoding']
+        quote_char = config['csv']['QuoteChar']
 
-        with open(path, newline='') as csvfile:
-            reader = csv.reader(csvfile, delimiter=delimiter)
+        with open(path, newline='', encoding=encoding) as csvfile:
+            reader = csv.reader(csvfile, delimiter=delimiter, quotechar=quote_char)
             for row in reader:
                 print(row[column_index])
                 return
