@@ -1,7 +1,8 @@
+import configparser
+import csv
 from django.core.management.base import BaseCommand
 import logging
 import os
-import csv
 from ....common.catalog.sentiment_type import SentimentType
 from ....common.catalog.source import Source
 
@@ -46,6 +47,18 @@ class Command(BaseCommand):
         path = options['path']
         if options['source'] is not None:
             path = os.path.join(Source.get_path(options['source']), options['type'] + '.csv')
+        config_file = os.path.join(os.path.dirname(path), 'settings.ini')
+
+        config = configparser.ConfigParser()
+        config.read(config_file)
+        column_index = int(config['csv']['IndexOfColumnWithData'])
+        delimiter = config['csv']['Delimiter']
+
+        with open(path, newline='') as csvfile:
+            reader = csv.reader(csvfile, delimiter=delimiter)
+            for row in reader:
+                print(row[column_index])
+                return
 
         self.stdout.write('path: %s' % path)
         self.stdout.write(self.style.SUCCESS('Success'))
