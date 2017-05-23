@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 import os
 import subprocess
-from ....settings import BASE_DIR
+from .... import settings
 from ....common.catalog.sentiment_type import SentimentType
 from ....common.catalog.source import Source
 
@@ -26,7 +26,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('Success'))
 
     def download(self, source: str, sentiment: str):
-        path = os.path.join(BASE_DIR, 'database', 'raw', source)
+        path = os.path.join(settings.BASE_DIR, 'database', 'raw', source)
         file = os.path.join(path, sentiment + '.csv')
         url = self.urls[source][sentiment];
         subprocess.call(['wget', url, '-O', file])

@@ -1,4 +1,4 @@
-from ...settings import BASE_DIR
+from ... import settings
 import os
 
 
@@ -16,5 +16,5 @@ class Source:
     def get_path(source: str):
         paths = {}
         for source in Source.get_list():
-            paths[source] = os.path.join(BASE_DIR, 'database', 'raw', source.lower())
+            paths[source] = os.path.join(settings.BASE_DIR, 'database', 'raw', source.lower())
         return paths[source]
